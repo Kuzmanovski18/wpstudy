@@ -16,36 +16,37 @@
 </header>
 <main>
     <h2>Search an event:</h2>
-    <form th:method="GET" th:action="@{/events/events-list}">
+
+    <form method="GET" action="/servlet/eventlist">
         <label for="search">By Event Name:</label>
         <input type="text" name="searchName" id="search" placeholder="Search an event">
         <br/>
         <label for="minRating">By Minimum Event Rating (0.00 - 10.00): </label>
-        <input type="number" name="minRating" id="minRating" min="0" max="10" placeholder="Min Rating">
+        <input type="number" name="minRating" id="minRating" min="0" max="10" step="0.01" placeholder="Min Rating">
         <br/>
-        <input type="submit" value="Submit">
+        <input type="submit" value="Search">
     </form>
 
-    <form th:method="POST" th:action="@{/events/eventBooking}">
+
+    <form method="POST" action="/eventBooking">
         <h2>Choose an event:</h2>
-
         <div th:each="event : ${events}">
-            <p>
-                Name: <th:block th:text="${event.getName()}"></th:block>,
-                Description: <th:block th:text="${event.getDescription()}"></th:block>,
-                Rating: <th:block th:text="${event.getPopularityScore()}"></th:block>
-            </p>
-
-            <input type="radio" id="rad1" name="rad" th:value="${event.name}" />
-            <br/>
+            <input type="radio" id="event" name="eventName" th:value="${event.name}" required />
+            <label th:for="event" th:text="${event.name}"></label>
+            <p>Description: <span th:text="${event.description}"></span></p>
+            <p>Rating: <span th:text="${event.popularityScore}"></span></p>
             <br/>
         </div>
 
         <h2>Choose number of tickets:</h2>
-        <input type="number" name="numTickets" min="1" max="10"><br/>
-        <br/>
+        <input type="number" name="numTickets" min="1" max="10" required><br/><br/>
+
+        <label for="attendeeName">Your Name:</label>
+        <input type="text" id="attendeeName" name="attendeeName" required><br/><br/>
+
         <input type="submit" value="Submit">
     </form>
+
 </main>
 </body>
-</html>tml>
+</html>

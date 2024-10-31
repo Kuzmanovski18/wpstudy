@@ -14,7 +14,7 @@ import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
+
 
 @WebServlet(name = "EventListServlet", urlPatterns = "/servlet/eventlist")
 public class EventListServlet extends HttpServlet {
@@ -26,32 +26,40 @@ public class EventListServlet extends HttpServlet {
         this.springTemplateEngine = springTemplateEngine;
     }
 
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Event> eventList;
         String searchName = req.getParameter("searchName");
-        String minRating =req.getParameter("minRating");
+        String minRatingStr = req.getParameter("minRating");  // Avoid parsing directly
 
-        if (searchName != null && minRating != null && !Objects.equals(minRating, "")) {
+
+        if ((searchName != null && !searchName.isEmpty()) && (minRatingStr != null && !minRatingStr.isEmpty())) {
+            double minRating = Double.parseDouble(minRatingStr);
             eventList = eventService.searchEvents(searchName).stream()
-                    .filter(event -> event.getPopularityScore() >= Double.parseDouble(minRating))
+                    .filter(event -> event.getPopularityScore() >= minRating)
                     .toList();
-        } else if (minRating != null && !Objects.equals(minRating, "")) {
+        } else if (minRatingStr != null && !minRatingStr.isEmpty()) {
+            double minRating = Double.parseDouble(minRatingStr);
             eventList = eventService.listAll().stream()
-                    .filter(event -> event.getPopularityScore() >= Double.parseDouble(minRating))
+                    .filter(event -> event.getPopularityScore() >= minRating)
                     .toList();
-        } else if (searchName != null) {
+        } else if (searchName != null && !searchName.isEmpty()) {
             eventList = eventService.searchEvents(searchName);
         } else {
             eventList = eventService.listAll();
         }
+
 
         IWebExchange iWebExchange = JakartaServletWebApplication
                 .buildApplication(req.getServletContext())
                 .buildExchange(req, resp);
         WebContext context = new WebContext(iWebExchange);
         context.setVariable("events", eventList);
+
+
         this.springTemplateEngine.process("listEvents.html", context, resp.getWriter());
     }
+
 
 }

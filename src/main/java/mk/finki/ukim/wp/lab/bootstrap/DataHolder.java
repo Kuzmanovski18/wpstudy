@@ -1,6 +1,7 @@
 package mk.finki.ukim.wp.lab.bootstrap;
 
 import jakarta.annotation.PostConstruct;
+import mk.finki.ukim.wp.lab.model.Category;
 import mk.finki.ukim.wp.lab.model.Event;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +11,7 @@ import java.util.List;
 @Component
 public class DataHolder {
     public static List<Event> events = new ArrayList<>();
+    public static List<Category> categories = new ArrayList<>();
 
     @PostConstruct
     public void init() {
@@ -23,5 +25,12 @@ public class DataHolder {
         events.add(new Event("Photography Course", "Improve your photography skills with experts.", 7.3));
         events.add(new Event("Marathon", "Participate in the annual city marathon.", 8.7));
         events.add(new Event("Science Fair", "Discover fascinating science projects and experiments.", 8.1));
+
+        categories.add(new Category("Sports"));
+        categories.add(new Category("Food"));
+        categories.add(new Category("Music"));
+        categories.add(new Category("Course"));
+        categories.add(new Category("Studies "));
+
     }
 }
