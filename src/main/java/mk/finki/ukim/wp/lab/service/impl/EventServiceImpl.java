@@ -1,5 +1,6 @@
 package mk.finki.ukim.wp.lab.service.impl;
 
+import mk.finki.ukim.wp.lab.model.Category;
 import mk.finki.ukim.wp.lab.model.Event;
 import mk.finki.ukim.wp.lab.repository.EventRepository;
 import mk.finki.ukim.wp.lab.service.EventService;
@@ -23,5 +24,10 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<Event> searchEvents(String text) {
         return eventRepository.searchEvents(text);
+    }
+
+    @Override
+    public List<Event> getEventsByCategory(Category category) {
+        return eventRepository.getEventsByCategory(category);
     }
 }
